@@ -1,3 +1,5 @@
 package com.example.activitytrackerwearoschild.presentation
-
-data class ScreenRoutes()
+sealed class ScreenRoutes(val route: String) {
+    object Pairing : ScreenRoutes("PAIRING")
+    object Home : ScreenRoutes("HOME")
+}
