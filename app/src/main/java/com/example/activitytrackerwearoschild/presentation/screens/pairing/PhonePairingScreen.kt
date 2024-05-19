@@ -39,7 +39,7 @@ fun PhonePairingScreen(
     val pairedStatus by remember {
         viewModel.pairedState
     }
-    var buttonPressed by remember {mutableStateOf(false)}
+    var buttonPressed by remember { mutableStateOf(false) }
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -67,7 +67,7 @@ fun PhonePairingScreen(
             ) {
                 Icon(Icons.AutoMirrored.Filled.SendToMobile, contentDescription = null)
             }
-            if(buttonPressed) {
+            if (buttonPressed) {
                 if (pairedStatus) {
                     navController.popBackStack()
                     navController.navigate(Graph.HOME)
@@ -76,6 +76,7 @@ fun PhonePairingScreen(
                         activity, "Try pairing again!",
                         Toast.LENGTH_SHORT
                     ).show();
+                    buttonPressed = false
                 }
             }
         }

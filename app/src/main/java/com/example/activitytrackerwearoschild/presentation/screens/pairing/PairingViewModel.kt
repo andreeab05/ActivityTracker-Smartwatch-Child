@@ -8,14 +8,16 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class PairingViewModel(private val datastoreRepository: DatastoreRepository
+class PairingViewModel(
+    private val datastoreRepository: DatastoreRepository
 ) : ViewModel() {
     private val pairingKey = booleanPreferencesKey("paired")
     var pairedState = mutableStateOf(false)
         private set
-    fun updatePairingStatus(){
+
+    fun updatePairingStatus() {
         CoroutineScope(Dispatchers.IO).launch {
-            datastoreRepository.readData(key = pairingKey).collect{paired ->
+            datastoreRepository.readData(key = pairingKey).collect { paired ->
                 if (paired != null) {
                     pairedState.value = paired
                 }

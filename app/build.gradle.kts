@@ -10,7 +10,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.activitytrackerwearoschild"
+        applicationId = "com.example.activitytracker"
         minSdk = 29
         targetSdk = 34
         versionCode = 1
@@ -66,6 +66,7 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended:1.3.1")
     implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
     implementation("com.google.firebase:firebase-database")
+    implementation("com.google.firebase:firebase-auth")
     implementation("com.google.android.gms:play-services-location:18.0.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
@@ -73,6 +74,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     implementation("androidx.datastore:datastore-preferences:1.1.1")
     implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation("androidx.wear.compose:compose-material3:1.0.0-alpha23")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
