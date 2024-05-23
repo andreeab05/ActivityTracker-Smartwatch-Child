@@ -17,6 +17,7 @@ import com.example.activitytrackerwearoschild.presentation.screens.panicsignal.P
 import com.example.activitytrackerwearoschild.presentation.screens.panicsignal.PanicSignalViewModel
 import com.example.activitytrackerwearoschild.presentation.screens.quickmessages.QuickMessageScreen
 import com.example.activitytrackerwearoschild.presentation.screens.quickmessages.QuickMessageViewModel
+import com.google.android.gms.location.FusedLocationProviderClient
 
 object Graph {
     const val ROOT = "root_graph"
@@ -30,7 +31,8 @@ fun TrackerApp(
     setUID: () -> Unit,
     datastoreRepository: DatastoreRepository,
     databaseRepository: DatabaseRepository,
-    activity: ComponentActivity
+    activity: ComponentActivity,
+    locationClient: FusedLocationProviderClient
 ) {
     val navController = rememberNavController()
     val startDestination = if (paired) {  //Graph.AUTHENTICATION
@@ -77,7 +79,9 @@ fun TrackerApp(
             composable(ScreenRoutes.PanicSignal.route) {
                 PanicSignalScreen(
                     navController = navController,
-                    viewModel = PanicSignalViewModel(databaseRepository)
+                    viewModel = PanicSignalViewModel(databaseRepository),
+                    locationClient = locationClient,
+                    context = activity
                 )
             }
         }

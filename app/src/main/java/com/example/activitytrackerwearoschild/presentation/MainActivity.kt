@@ -376,6 +376,7 @@ import com.example.activitytrackerwearoschild.data.DatastoreRepository
 //import com.example.activitytrackerwearos.presentation.screens.reminders.MedicationReminderState
 //import com.example.activitytrackerwearos.presentation.screens.reminders.ReminderScheduler
 import com.example.activitytrackerwearoschild.presentation.theme.ActivityTrackerWearOsChildTheme
+import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.wearable.MessageClient
 import com.google.android.gms.wearable.MessageEvent
 import com.google.firebase.auth.FirebaseAuth
@@ -407,11 +408,14 @@ class MainActivity : ComponentActivity() {
     private val datastoreRepository: DatastoreRepository by lazy { DatastoreRepository(dataStore) }
     private val databaseRepository: DatabaseRepository by lazy { DatabaseRepository(this) }
     private lateinit var auth: FirebaseAuth
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
+        setLocationPermissions()
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         val context = this
         auth = Firebase.auth
         // TODO REMOVE AFTER!!!
@@ -442,7 +446,8 @@ class MainActivity : ComponentActivity() {
                                     setUID = { setupMessagePassing() },
                                     datastoreRepository,
                                     databaseRepository,
-                                    context
+                                    context,
+                                    fusedLocationClient
                                 )
                             }
                         }
@@ -464,7 +469,8 @@ class MainActivity : ComponentActivity() {
                                     setUID = { setupMessagePassing() },
                                     datastoreRepository,
                                     databaseRepository,
-                                    context
+                                    context,
+                                    fusedLocationClient
                                 )
                             }
                         }
@@ -559,10 +565,12 @@ class MainActivity : ComponentActivity() {
                     Wearable.getCapabilityClient(applicationContext)
                         .getCapability(
                             MESSAGE_PASSING_CAPABILITY_NAME,
+                            //CapabilityClient.FILTER_ALL
                             CapabilityClient.FILTER_REACHABLE
                         )
                 )
-                Log.d("msg", capabilityInfo.nodes.toString())
+                Log.d("Wearable", "Capability info: $capabilityInfo")
+                Log.d("Wearable", "Nodes: ${capabilityInfo.nodes}")
                 // capabilityInfo has the reachable nodes with the transcription capability
                 updateTranscriptionCapability(capabilityInfo).also {
                     Wearable.getCapabilityClient(applicationContext).addListener(
@@ -584,9 +592,10 @@ class MainActivity : ComponentActivity() {
 //        Log.d("node", "$transcriptionNodeId")
     }
 
-    private fun pickBestNodeId(nodes: Set<Node>): String {
+    private fun pickBestNodeId(nodes: Set<Node>): String? {
         // Find a nearby node or pick one arbitrarily.
-        return nodes.first().id
+        return nodes.firstOrNull { it.isNearby }?.id ?: nodes.firstOrNull()?.id
+        //return nodes.first().id
     }
 
 
@@ -723,6 +732,32 @@ class MainActivity : ComponentActivity() {
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
+    }
+
+    private fun setLocationPermissions(){
+        val fineLocationPermissionGranted = ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+
+        val coarseLocationPermissionGranted = ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+
+        if (!fineLocationPermissionGranted || !coarseLocationPermissionGranted
+        ) {
+            Log.d("Geofence", "Has to request permissions")
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                ),
+                LOCATION_PERMISSION_REQUEST_CODE
+            )
+            return
+        }
     }
 
 }

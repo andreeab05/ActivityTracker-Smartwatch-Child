@@ -55,10 +55,11 @@ fun CircularLayout(
         val radiusPx = min(constraints.maxWidth, constraints.maxHeight) / 2.2f
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
             modifier = Modifier.align(Alignment.Center)//.offset{ IntOffset( x = centerX, y = centerY)}
         ) {
             Text(
-                modifier = Modifier.wrapContentWidth(),
+                modifier = Modifier.wrapContentWidth().padding(4.dp),
                 text = viewModel.messagePreview.value,
                 color = Color.White,
                 fontSize = 16.sp,
@@ -110,17 +111,17 @@ fun CircularLayout(
 
 @Composable
 fun EmojiButton(emoji: String, onClick: () -> Unit) {
-    val buttonColor = Color(0xFF6200EA).copy(alpha = 0.3f)
+    val buttonColor = Color(0xFF8080FF).copy(alpha = 0.5f)
 
     Card(
-        modifier = Modifier.size(48.dp),
+        modifier = Modifier.size(40.dp),
         shape = CircleShape,
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Button(
             onClick = onClick,
             shape = CircleShape,
-            modifier = Modifier.size(48.dp),
+            modifier = Modifier.size(40.dp),
             contentPadding = PaddingValues(0.dp),
             colors = ButtonDefaults.buttonColors(containerColor = buttonColor)
             //modifier = Modifier.size(40.dp)//.padding(all = 8.dp),
@@ -142,18 +143,18 @@ fun QuickMessageScreen(
     viewModel: QuickMessageViewModel
 ) {
     Box(
-        Modifier.background(
-            brush = Brush.linearGradient(
-                colors = listOf(
-                    Color(0xFF673AB7),
-                    Color(0xFF4CAF50),
-                    Color(0xFFFF9800),
-                    Color(0xFF2196F3)
-                ),
-                start = androidx.compose.ui.geometry.Offset(0f, 0f),
-                end = androidx.compose.ui.geometry.Offset(0f, 1000f)
-            )
-        )
+//        Modifier.background(
+//            brush = Brush.linearGradient(
+//                colors = listOf(
+//                    Color(0xFF673AB7),
+//                    Color(0xFF4CAF50),
+//                    Color(0xFFFF9800),
+//                    Color(0xFF2196F3)
+//                ),
+//                start = androidx.compose.ui.geometry.Offset(0f, 0f),
+//                end = androidx.compose.ui.geometry.Offset(0f, 1000f)
+//            )
+//        )
     ) {
         CircularLayout(
             viewModel = viewModel,

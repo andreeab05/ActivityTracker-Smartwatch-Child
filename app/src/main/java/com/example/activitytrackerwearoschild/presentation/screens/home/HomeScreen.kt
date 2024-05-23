@@ -17,14 +17,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Message
 import androidx.compose.material.icons.filled.ReportProblem
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -57,12 +60,12 @@ fun HomeScreen(
 ) {
     Box(
         modifier = modifier
-            .fillMaxSize()
-            .background(
-                Brush.verticalGradient(
-                    colors = listOf(Color(0xFF4A90E2), Color(0xFFFF6F61))
-                )
-            ),
+            .fillMaxSize(),
+//            .background(
+//                Brush.verticalGradient(
+//                    colors = listOf(Color(0xFF45E3FF), Color(0xFFB338D5))
+//                )
+//            ),
         contentAlignment = Alignment.Center
     ) {
         val firstRowVisible = remember { mutableStateOf(false) }
@@ -108,39 +111,46 @@ fun HomeScreen(
                 )
             ) {
                 Column() {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            text = stringResource(id = R.string.quick_message),
-                            fontSize = 16.sp,
-                            color = Color.White
-                        )
-                        Button(
-                            modifier = Modifier
-                                .padding(8.dp)
-                                .size(32.dp, 32.dp),
-                            onClick = { navController.navigate(ScreenRoutes.QuickMessage.route) },
-                        ) {
-                            Icon(imageVector = Icons.Filled.Email, contentDescription = null)
+                    Button(
+                        onClick = { navController.navigate(ScreenRoutes.QuickMessage.route) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 24.dp, vertical = 4.dp),
+                        colors = androidx.wear.compose.material.ButtonDefaults.buttonColors(Color(0xFF8080FF))
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = stringResource(id = R.string.quick_message),
+                                fontSize = 16.sp,
+                                color = Color.White
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Icon(imageVector = Icons.Filled.Email, contentDescription = null, tint = Color.White)
                         }
                     }
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            text = stringResource(id = R.string.panic_signal),
-                            fontSize = 16.sp,
-                            color = Color.White
-                        )
-                        Button(
-                            modifier = Modifier
-                                .padding(8.dp)
-                                .size(32.dp, 32.dp),
-                            onClick = { navController.navigate(ScreenRoutes.PanicSignal.route) },
-                        ) {
+
+                    Button(
+                        onClick = { navController.navigate(ScreenRoutes.PanicSignal.route) }, modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 24.dp, vertical = 4.dp),
+                        colors = androidx.wear.compose.material.ButtonDefaults.buttonColors(Color.Red)
+                    ){
+
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = stringResource(id = R.string.panic_signal),
+                                fontSize = 16.sp,
+                                color = Color.White
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
                             Icon(
                                 imageVector = Icons.Filled.ReportProblem,
-                                contentDescription = null
+                                contentDescription = null,
+                                tint = Color.White
                             )
                         }
                     }
+
                 }
             }
         }

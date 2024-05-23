@@ -42,4 +42,31 @@ class DatabaseRepository(context: Context) {
             Log.d("Database", "Not authenticated")
         }
     }
+
+    fun sendSOS() {
+        val databaseRef = database.getReference("sosSignals")
+        val dateFormat = SimpleDateFormat("EEE, MMM d, hh:mm a", Locale.getDefault())
+        val time = dateFormat.format(Date())
+        val messageData = HashMap<String, Any>()
+        //messageData["deviceId"] = deviceId
+        messageData["lat"] = 44.378240
+        messageData["long"] = 26.099380
+        messageData["time"] = time
+
+        Log.d("RTB", "$database, $databaseRef")
+        if (user != null) {
+            databaseRef.child(deviceId).setValue(messageData)
+                .addOnSuccessListener {
+                    // Data was successfully written to the database
+                    Log.d("Database", "Success")
+                }
+                .addOnFailureListener { e ->
+                    // Handle any errors
+                    Log.d("Database", "Error: ${e.message}")
+                    e.printStackTrace()
+                }
+        } else {
+            Log.d("Database", "Not authenticated")
+        }
+    }
 }

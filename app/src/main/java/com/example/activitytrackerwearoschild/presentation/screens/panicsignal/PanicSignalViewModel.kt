@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 class PanicSignalViewModel(private val databaseRepository: DatabaseRepository) : ViewModel() {
     fun sendPanicSignal() {
         CoroutineScope(Dispatchers.IO).launch {
+            databaseRepository.sendSOS()
             //databaseRepository.sendQuickMessage(message)
         }
     }
